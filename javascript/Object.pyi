@@ -1,4 +1,4 @@
-from typing import Any, overload
+from typing import Any, overload, Mapping
 
 
 __all__ = (
@@ -24,6 +24,10 @@ class CustomDict(dict):
 
     @overload
     def __call__(self, seq: list[tuple]) -> CustomDict: ...
+
+    def __or__(self, other: Mapping) -> CustomDict: ...
+
+    def __ror__(self, other: Mapping) -> CustomDict: ...
 
 
 class Object(CustomDict):

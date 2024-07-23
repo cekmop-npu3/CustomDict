@@ -10,7 +10,7 @@ __all__ = (
 
 
 def applyCustomDict(dictString: str) -> dict:
-    while s := search(reExp := r'\{+(?!.*\{+).*?}', dictString):
+    while s := search(reExp := r'{+(?!.*{).*?}', dictString):
         dictString = sub(reExp, f'CustomDict({list(eval(s.group()).items())})', dictString, count=1)
     return eval(dictString)
 
@@ -33,11 +33,15 @@ class CustomDict(dict):
     def __hash__(self) -> hash:
         return hash(self.__class__.__name__)
 
-    def __or__(self, other) -> type(CustomDict):
-        return type(self)
+    def __or__(self, other) -> CustomDict | type(CustomDict):
+        if isinstance(other, dict):
+            return self(other)
+        return type(CustomDict)
 
-    def __ror__(self, other) -> type(CustomDict):
-        return type(self)
+    def __ror__(self, other) -> CustomDict | type(CustomDict):
+        if isinstance(other, dict):
+            return self(other)
+        return type(CustomDict)
 
 
 class ObjectMeta(type):

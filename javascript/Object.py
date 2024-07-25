@@ -34,7 +34,7 @@ class CustomDict(dict):
         return self
 
     def __hash__(self) -> hash:
-        return hash(self.__class__.__name__)
+        return hash(self.__dict__)
 
     def __or__(self, other) -> CustomDict | type(CustomDict):
         if isinstance(other, dict):

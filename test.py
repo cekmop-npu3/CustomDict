@@ -1,5 +1,7 @@
 from javascript import Object
 
+from typing import Union
+
 
 class TestDict(Object):
     name: str
@@ -11,19 +13,15 @@ class ServiceToken(Object):
 
 
 class ServiceTokenResponse(Object):
-    response: list[int | ServiceToken]
+    response: list[Union[TestDict, ServiceToken]]  # Union[obj1, obj2] is better for annotations than obj1 | obj2
 
 
-a = ServiceTokenResponse({"response": [179, {"access_token": "99fd1ce0ff62b2c399fd1ce05699a02840999fd99fd1ce0ff624523f16b8c9049487efd"}]})
+a = ServiceTokenResponse({"response": [TestDict(name=12), {"access_token": "99fd1ce0ff62b2c399fd1ce05699a02840999fd99fd1ce0ff624523f16b8c9049487efd"}]})
 
-b = TestDict({'name': 'nameless', 'id': 1337})
+a.update({'value': {'smth': 34}})
 
-c = a | b  # "c" object now has attributes of both "a" and "b"
+a.value = {'newValue': 34}
 
-print(c.name)
+c = ServiceTokenResponse.fromkeys(['s', 'v'], TestDict(name=12)(surname=14)) | a
 
-print(a.some_key)  # Syntax highlighting. Returns None
-
-print(a.response[1].access_token)
-
-print(b.id)
+print(c)  # {'s': {'name': 12, 'surname': 14}, 'v': {'name': 12, 'surname': 14}, 'response': [{'name': 12}, {'access_token': '99fd1ce0ff62b2c399fd1ce05699a02840999fd99fd1ce0ff624523f16b8c9049487efd'}], 'value': {'newValue': 34}}

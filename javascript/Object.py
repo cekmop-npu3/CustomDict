@@ -39,12 +39,12 @@ class CustomDict(dict):
     def __or__(self, other) -> CustomDict | type(CustomDict):
         if isinstance(other, dict):
             return self(other)
-        return type(CustomDict)
+        return type(self)
 
     def __ror__(self, other) -> CustomDict | type(CustomDict):
         if isinstance(other, dict):
             return self(other)
-        return type(CustomDict)
+        return type(self)
 
     def update(self, seq=None, **kwargs) -> None:
         [self.__setitem__(key, value) for key, value in (dict(seq) | kwargs if seq else kwargs).items()]
